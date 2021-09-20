@@ -51,7 +51,7 @@ from cliente c, livro l, emprestimo e
 where l.codigo = e.codigo and c.cpf = e.cpf and e.data_emprestimo = '2019-11-20';
 
 -- m) Selecione todos os dados de todos os livros cadastrados no sebo e para aqueles que já foram vendidos mostre também o CPF e o nome dos clientes que realizaram a
-compra. 
+-- compra. 
 select l.*, c.cpf, c.nome
 from (livro l left join cliente c 
 	on c.cpf = l.cpf_venda);
@@ -83,7 +83,7 @@ select genero, avg(valor_diaria_emprestimo) from livro where cpf_venda is null a
 select ano_edicao, count(*) as quantidade from livro group by ano_edicao having quantidade >= 5;
 
 -- t) Selecione todos os dados dos clientes que nunca emprestaram livros e dos livros que nunca foram emprestados.
-select l.* from (
+select e.*, l.codigo from (
 	livro l left join emprestimo e on l.codigo = e.codigo) where e.data_emprestimo is null
-union select c.* from (
+union select e.*, c.cpf from (
 	emprestimo e right join cliente c on c.cpf = e.cpf) where e.data_emprestimo is null;
