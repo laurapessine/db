@@ -84,10 +84,6 @@ select ano_edicao, count(*) as quantidade from livro group by ano_edicao having 
 
 -- t) Selecione todos os dados dos clientes que nunca emprestaram livros e dos livros que nunca foram emprestados.
 select l.* from (
-	livro l left join emprestimo e on l.codigo = e.codigo)
+	livro l left join emprestimo e on l.codigo = e.codigo) where e.data_emprestimo is null
 union select c.* from (
-	cliente c right join emprestimo e on c.cpf = e.cpf);
-
-select c.*, l.* from cliente c, livro l where c.cpf not in (
-	select c.cpf from (cliente c inner join emprestimo e on c.cpf = e.cpf) and l.codigo not in (
-		select l.codigo from (livro l inner join emprestimo e on l.codigo = e.codigo));
+	emprestimo e right join cliente c on c.cpf = e.cpf) where e.data_emprestimo is null;
